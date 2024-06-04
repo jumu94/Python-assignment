@@ -1,0 +1,91 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_excel('C:\\Users\\Gladiator\\Documents\\Untitled Folder\\myexcel.xlsx')
+df['Height'] = np.random.randint(150, 181, df.shape[0])
+
+df['Salary'].fillna(df['Salary'].mean(), inplace=True)
+
+# 1. Distribution of employees across each team
+team_distribution = df['Team'].value_counts()
+team_percentage = (team_distribution / len(df)) * 100
+
+
+
+
+plt.figure(figsize=(10, 6))
+sns.barplot(x=team_distribution.index, y=team_distribution.values, palette='viridis')
+plt.title('Distribution of Employees Across Teams')
+plt.xlabel('Team')
+plt.ylabel('Number of Employees')
+plt.xticks(rotation=45)
+plt.show()
+
+print("Team Distribution Percentage:")
+print(team_percentage)
+
+# 2. Segregation of employees by position
+position_distribution = df['Position'].value_counts()
+print(team_distribution, team_percentage)
+# Plotting the distribution
+plt.figure(figsize=(10, 6))
+sns.barplot(x=position_distribution.index, y=position_distribution.values, palette='viridis')
+plt.title('Distribution of Employees by Position')
+plt.xlabel('Position')
+plt.ylabel('Number of Employees')
+plt.show()
+
+# 3. Predominant age group
+bins = [20, 30, 40, 50, 60]
+labels = ['20-30', '30-40', '40-50', '50-60']
+df['age_group'] = pd.cut(df['Age'], bins=bins, labels=labels, right=False)
+
+age_group_distribution = df['age_group'].value_counts().sort_index()
+
+# Plotting the age group distribution
+plt.figure(figsize=(10, 6))
+sns.barplot(x=age_group_distribution.index, y=age_group_distribution.values, palette='viridis')
+plt.title('Distribution of Employees by Age Group')
+plt.xlabel('Age Group')
+plt.ylabel('Number of Employees')
+plt.show()
+
+print("Age Group Distribution:")
+print(age_group_distribution)
+
+# 4. Team and position with the highest salary expenditure
+salary_by_team = df.groupby('Team')['Salary'].sum()
+salary_by_position = df.groupby('Position')['Salary'].sum()
+
+# Plotting the salary expenditure by team
+plt.figure(figsize=(10, 6))
+sns.barplot(x=salary_by_team.index, y=salary_by_team.values, palette='viridis')
+plt.title('Salary Expenditure by Team')
+plt.xlabel('Team')
+plt.ylabel('Total Salary Expenditure')
+plt.xticks(rotation=45)
+plt.show()
+
+# Plotting the salary expenditure by position
+plt.figure(figsize=(10, 6))
+sns.barplot(x=salary_by_position.index, y=salary_by_position.values, palette='viridis')
+plt.title('Salary Expenditure by Position')
+plt.xlabel('Position')
+plt.ylabel('Total Salary Expenditure')
+plt.show()
+
+print("Team with highest salary expenditure:", salary_by_team.idxmax(), salary_by_team.max())
+print("Position with highest salary expenditure:", salary_by_position.idxmax(), salary_by_position.max())
+
+# 5. Correlation between age and salary
+correlation = df['Age'].corr(df['Salary'])
+
+# Plotting the correlation
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x=df['Age'], y=df['Salary'], hue=df['Team'], palette='viridis', alpha=0.7)
+plt.title('Correlation between Age and Salary')
+plt.xlabel('Age')
+plt.ylabel('Salary')
+plt.show()
