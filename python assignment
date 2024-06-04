@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-df = pd.read_excel('C:\\Users\\Gladiator\\Documents\\Untitled Folder\\myexcel.xlsx')
+df = pd.read_excel('myexcel.xlsx')
 df['Height'] = np.random.randint(150, 181, df.shape[0])
 
 df['Salary'].fillna(df['Salary'].mean(), inplace=True)
