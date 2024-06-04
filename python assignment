@@ -9,6 +9,7 @@ df['Height'] = np.random.randint(150, 181, df.shape[0])
 df['Salary'].fillna(df['Salary'].mean(), inplace=True)
 
 # 1. Distribution of employees across each team
+
 team_distribution = df['Team'].value_counts()
 team_percentage = (team_distribution / len(df)) * 100
 
